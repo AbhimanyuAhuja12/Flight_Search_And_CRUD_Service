@@ -1,0 +1,16 @@
+{
+  "name": "airline_booking_system",
+  "version": "1.0.0",
+  "description": "Booking System Project",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch src/index.js"
+  },
+  "author": "Abhimanyu Ahuja",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "http-status-codes": "^2.3.0"
+  }
+}
