@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Airplane extends Model {
     /**
@@ -13,12 +11,31 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Airplane.init({
-    modelNumber: {type :DataTypes.STRING, allowNull :false,defaultValue:''},
-    capacity:{type: DataTypes.INTEGER,allowNull:false,defaultValue:0}
-  }, {
-    sequelize,
-    modelName: 'Airplane',
-  });
+  Airplane.init(
+    {
+      modelNumber: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "",
+        validate: {
+          isAlphanumeric: {
+            msg: "Model number must be alphanumeric",
+          },
+        },
+      },
+      capacity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+        validate: {
+          max: 1000,
+        },
+      },
+    },
+    {
+      sequelize,
+      modelName: "Airplane",
+    }
+  );
   return Airplane;
 };
