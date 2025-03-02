@@ -18,8 +18,9 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: "",
         validate: {
-          isAlphanumeric: {
-            msg: "Model number must be alphanumeric",
+          is: {
+            args: [/^[A-Za-z0-9 ]+$/], //  Allows letters, numbers, and spaces
+            msg: "Model number can only contain alphabets, numbers, and spaces (no special characters)",
           },
         },
       },
