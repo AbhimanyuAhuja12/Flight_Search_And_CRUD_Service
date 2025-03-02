@@ -2,6 +2,8 @@ const { AirplaneService } = require("../services");
 
 const { StatusCodes } = require("http-status-codes");
 
+const AppError = require("../utils/errors/app-error");
+
 const { SuccessResponse, ErrorResponse } = require("../utils/common");
 /**
  * POST : /airplanes
@@ -78,8 +80,28 @@ async function destroyAirplane(req,res){
   }
 }
 
+async function updateAirplaneCapacity(req, res) {
+  try {
+    const { id } = req.params; 
+    const capacity = req.body.capacity || req.query.capacity; 
+
+    if (!capacity) {
+      throw new AppError('Capacity is required', StatusCodes.BAD_REQUEST);
+    }
+
+    const updatedAirplane = await AirplaneService.updateAirplaneCapacity(id, capacity);
+
+    SuccessResponse.data = updatedAirplane;
+    return res.status(StatusCodes.OK).json(SuccessResponse);
+  } catch (error) {
+    ErrorResponse.error = error;
+    return res.status(error.statusCode).json(ErrorResponse);
+  }
+}
+
+
 
 
 module.exports = {
-  createAirplane, getAirplanes , getAirplane , destroyAirplane
+  createAirplane, getAirplanes , getAirplane , destroyAirplane , updateAirplaneCapacity
 };

@@ -1,5 +1,5 @@
-const { StatusCodes } = require('http-status-codes');
-const AppError = require('../utils/errors/app-error');
+const { StatusCodes } = require("http-status-codes");
+const AppError = require("../utils/errors/app-error");
 class CrudRepository {
   constructor(model) {
     this.model = model;
@@ -17,16 +17,22 @@ class CrudRepository {
       },
     });
 
-    if(!response){
-      throw new AppError('Not able to find the resource',StatusCodes.NOT_FOUND);
+    if (!response) {
+      throw new AppError(
+        "Not able to find the resource",
+        StatusCodes.NOT_FOUND
+      );
     }
     return response;
   }
 
   async get(data) {
     const response = await this.model.findByPk(data);
-    if(!response){
-      throw new AppError('Not able to find the resource',StatusCodes.NOT_FOUND);
+    if (!response) {
+      throw new AppError(
+        "Not able to find the resource",
+        StatusCodes.NOT_FOUND
+      );
     }
     return response;
   }
@@ -37,13 +43,21 @@ class CrudRepository {
   }
 
   async update(id, data) {
-    const response = await this.model.update(data, {
-      where: {
-        id: id,
-      },
+    const [rowsUpdated] = await this.model.update(data, {
+      where: { id },
     });
-    return response;
+  
+    if (!rowsUpdated) {
+      throw new AppError("Not able to find the resource", StatusCodes.NOT_FOUND);
+    }
+  
+  
+    const updatedRecord = await this.model.findByPk(id);
+  
+    return updatedRecord;
   }
+  
+  
 }
 
 module.exports = CrudRepository;
