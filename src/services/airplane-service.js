@@ -39,7 +39,6 @@ async function getAirplane(id){
     return airplane;
   }
   catch(error){
-    console.log(error);
     if(error.statusCode==StatusCodes.NOT_FOUND){
       throw new AppError('The Airplane you requested is not present',error.statusCode);
     }
@@ -47,6 +46,19 @@ async function getAirplane(id){
   }
 }
 
+async function destroyAirplane(id){
+  try{
+    const response = await airplaneRepository.destroy(id);
+    return response;
+  }
+  catch(error){
+    if(error.statusCode==StatusCodes.NOT_FOUND){
+      throw new AppError('The Airplane you requested to destroy is not present',error.statusCode);
+    }
+    throw new AppError('Cannot destroy airplane', StatusCodes.INTERNAL_SERVER_ERROR)
+  }
+}
+
 module.exports = {
-  createAirplane,getAirplanes,getAirplane
+  createAirplane,getAirplanes,getAirplane, destroyAirplane
 };
