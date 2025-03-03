@@ -48,7 +48,22 @@ async function getAirport(id) {
       );
     }
     throw new AppError(
-      "Cannot fetch data of all the airport",
+      "Cannot fetch data of the airport",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
+async function updateAirport(id, data) {
+  try {
+    const airport = await airportRepository.update(id, data);
+    if (!airport) {
+      throw new AppError("Airport not found", StatusCodes.NOT_FOUND);
+    }
+    return airport;
+  } catch (error) {
+    throw new AppError(
+      "Cannot update the airport",
       StatusCodes.INTERNAL_SERVER_ERROR
     );
   }
@@ -76,5 +91,6 @@ module.exports = {
   createAirport,
   getAirports,
   getAirport,
+  updateAirport,
   destroyAirport,
 };
